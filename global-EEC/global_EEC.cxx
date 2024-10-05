@@ -118,6 +118,9 @@ int main(int argc, char **argv)
 
 	for(int mNEventCount = 0; mNEventCount < mNEvents1; mNEventCount++)
 	{
+		chain1->GetEntry(mNEventCount);
+		int nmult1=(int)ampt1->Event_multi;
+
 		for(int i=0; i<nmult1; i++)
 		{
 		   	hadron_loop(ampt1,i);					  
