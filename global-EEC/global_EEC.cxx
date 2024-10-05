@@ -68,6 +68,16 @@ TH1D *h1_global_eec_LightB;
 TH1D *h1_global_eec_LightM;
 TH1D *h1_global_eec_HeavyM;
 
+TH1D *h1_global_dphic_allparticle;
+TH1D *h1_global_dphic_LightB;
+TH1D *h1_global_dphic_LightM;
+TH1D *h1_global_dphic_HeavyM;
+
+TH1D *h1_global_detac_allparticle;
+TH1D *h1_global_detac_LightB;
+TH1D *h1_global_detac_LightM;
+TH1D *h1_global_detac_HeavyM;
+
 int main(int argc, char **argv)
 {
 	if(argc!=3) return 0;
@@ -127,6 +137,16 @@ int main(int argc, char **argv)
 	h1_global_eec_LightM = new TH1D("h1_global_eec_LightM","h1_global_eec_LightM",11000,-1.0, 10.0);
 	h1_global_eec_HeavyM = new TH1D("h1_global_eec_HeavyM","h1_global_eec_HeavyM",11000,-1.0, 10.0);
 
+	h1_global_dphic_allparticle = new TH1D("h1_global_dphic_allparticle","h1_global_dphic_allparticle",11000,-1.0, 10.0);
+	h1_global_dphic_LightB = new TH1D("h1_global_dphic_LightB","h1_global_dphic_LightB",11000,-1.0, 10.0);
+	h1_global_dphic_LightM = new TH1D("h1_global_dphic_LightM","h1_global_dphic_LightM",11000,-1.0, 10.0);
+	h1_global_dphic_HeavyM = new TH1D("h1_global_dphic_HeavyM","h1_global_dphic_HeavyM",11000,-1.0, 10.0);
+
+	h1_global_detac_allparticle = new TH1D("h1_global_detac_allparticle","h1_global_detac_allparticle",11000,-1.0, 10.0);
+	h1_global_detac_LightB = new TH1D("h1_global_detac_LightB","h1_global_detac_LightB",11000,-1.0, 10.0);
+	h1_global_detac_LightM = new TH1D("h1_global_detac_LightM","h1_global_detac_LightM",11000,-1.0, 10.0);
+	h1_global_detac_HeavyM = new TH1D("h1_global_detac_HeavyM","h1_global_detac_HeavyM",11000,-1.0, 10.0);
+
 	for(int mNEventCount = 0; mNEventCount < mNEvents1; mNEventCount++)
 	{
 		chain1->GetEntry(mNEventCount);
@@ -142,10 +162,10 @@ int main(int argc, char **argv)
     	AllParticles.insert(AllParticles.end(), LightM.begin(), LightM.end());
     	AllParticles.insert(AllParticles.end(), HeavyM.begin(), HeavyM.end());
 
-		try2correlate(AllParticles,h1_global_eec_allparticle);
-		try2correlate(LightB,h1_global_eec_LightB);
-		try2correlate(LightM,h1_global_eec_LightM);
-		try2correlate(HeavyM,h1_global_eec_HeavyM);
+		try2correlate(AllParticles, h1_global_eec_allparticle, h1_global_dphic_allparticle, h1_global_detac_allparticle);
+		try2correlate(LightB, h1_global_eec_LightB, h1_global_dphic_LightB, h1_global_detac_LightB);
+		try2correlate(LightM, h1_global_eec_LightM, h1_global_dphic_LightM, h1_global_detac_LightM);
+		try2correlate(HeavyM, h1_global_eec_HeavyM, h1_global_dphic_HeavyM, h1_global_detac_HeavyM);
 
 		LightB.clear();
 		LightM.clear();
@@ -200,7 +220,7 @@ void hadron_loop(AMPT* track,int i)
 	return;
 }
 
-void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec)
+void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec,TH1D* h1_global_dphic,TH1D* h1_global_detac)
 {
   	if((int)(Particles_v.size())==0) return;
 
@@ -232,7 +252,9 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec)
 					double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
 					// double energy_factor = 1;
 
-					h1_global_eec->Fill(delta_phi,energy_factor);
+					h1_global_eec->Fill(RL,energy_factor);
+					h1_global_dphic->Fill(delta_phi,energy_factor);
+					h1_global_detac->Fill(delta_eta,energy_factor);
 				}
 				else
 				{
@@ -243,7 +265,9 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec)
 					double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
 					// double energy_factor = 1;
 
-					h1_global_eec->Fill(delta_phi,energy_factor);
+					h1_global_eec->Fill(RL,energy_factor);
+					h1_global_dphic->Fill(delta_phi,energy_factor);
+					h1_global_detac->Fill(delta_eta,energy_factor);
 				}
 			}
 		}
@@ -262,6 +286,16 @@ void writeHistograms(char *outFile)//histogram write to file
 	h1_global_eec_LightB->Write();
 	h1_global_eec_LightM->Write();
 	h1_global_eec_HeavyM->Write();
+
+	h1_global_dphic_allparticle->Write();
+	h1_global_dphic_LightB->Write();
+	h1_global_dphic_LightM->Write();
+	h1_global_dphic_HeavyM->Write();
+
+	h1_global_detac_allparticle->Write();
+	h1_global_detac_LightB->Write();
+	h1_global_detac_LightM->Write();
+	h1_global_detac_HeavyM->Write();
 
 	f->Write(); ////!!!!!!!!
 	f->Close();
