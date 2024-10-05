@@ -232,7 +232,7 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec)
 					double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
 					// double energy_factor = 1;
 
-					h1_global_eec->Fill(RL,energy_factor);
+					h1_global_eec->Fill(delta_phi,energy_factor);
 				}
 				else
 				{
@@ -243,7 +243,7 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec)
 					double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
 					// double energy_factor = 1;
 
-					h1_global_eec->Fill(RL,energy_factor);
+					h1_global_eec->Fill(delta_phi,energy_factor);
 				}
 			}
 		}
