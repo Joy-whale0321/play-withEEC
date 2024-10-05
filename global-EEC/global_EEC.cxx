@@ -58,10 +58,10 @@ vector<TVector3> LightB;
 vector<TVector3> LightM;
 vector<TVector3> HeavyM;
 
-double eta_cut=1.0;//MLCC
-double delta_eta_cut=0.5;//MLCC                              
-double pt_low_cut=0.3;//MLCC
-double pt_high_cut=5.0;//MLCC
+double eta_cut=5.0;//MLCC
+double delta_eta_cut=0.0;//MLCC                              
+double pt_low_cut=0.001;//MLCC
+double pt_high_cut=10.0;//MLCC
 
 TH1D *h1_global_eec_allparticle;
 
