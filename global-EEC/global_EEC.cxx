@@ -64,6 +64,9 @@ double pt_low_cut=0.001;//MLCC
 double pt_high_cut=10.0;//MLCC
 
 TH1D *h1_global_eec_allparticle;
+TH1D *h1_global_eec_LightB;
+TH1D *h1_global_eec_LightM;
+TH1D *h1_global_eec_HeavyM;
 
 int main(int argc, char **argv)
 {
@@ -120,6 +123,9 @@ int main(int argc, char **argv)
  	// cout<<"No. zpct0="<<mNEvents1<<" No. afterART="<<mNEvents2<<" No. after zpc="<<mNEvents3<<endl;
 
 	h1_global_eec_allparticle = new TH1D("h1_global_eec_allparticle","h1_global_eec_allparticle",11000,-1.0, 10.0);
+	h1_global_eec_LightB = new TH1D("h1_global_eec_LightB","h1_global_eec_LightB",11000,-1.0, 10.0);
+	h1_global_eec_LightM = new TH1D("h1_global_eec_LightM","h1_global_eec_LightM",11000,-1.0, 10.0);
+	h1_global_eec_HeavyM = new TH1D("h1_global_eec_HeavyM","h1_global_eec_HeavyM",11000,-1.0, 10.0);
 
 	for(int mNEventCount = 0; mNEventCount < mNEvents1; mNEventCount++)
 	{
@@ -137,6 +143,9 @@ int main(int argc, char **argv)
     	AllParticles.insert(AllParticles.end(), HeavyM.begin(), HeavyM.end());
 
 		try2correlate(AllParticles,h1_global_eec_allparticle);
+		try2correlate(LightB,h1_global_eec_LightB);
+		try2correlate(LightM,h1_global_eec_LightM);
+		try2correlate(HeavyM,h1_global_eec_HeavyM);
 
 		LightB.clear();
 		LightM.clear();
@@ -220,8 +229,8 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec)
 					double delta_phi = 2.0*PI - fabs(Particles_v[i].Y()-Particles_v[j].Y());
 					double RL = sqrt(delta_phi*delta_phi + delta_eta*delta_eta);
 
-					// double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
-					double energy_factor = 1;
+					double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
+					// double energy_factor = 1;
 
 					h1_global_eec->Fill(RL,energy_factor);
 				}
@@ -231,8 +240,8 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec)
 					double delta_phi = fabs(Particles_v[i].Y()-Particles_v[j].Y());
 					double RL = sqrt(delta_phi*delta_phi + delta_eta*delta_eta);
 
-					// double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
-					double energy_factor = 1;
+					double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
+					// double energy_factor = 1;
 
 					h1_global_eec->Fill(RL,energy_factor);
 				}
@@ -250,6 +259,9 @@ void writeHistograms(char *outFile)//histogram write to file
 	TFile *f = new TFile(file,"RECREATE");
 
 	h1_global_eec_allparticle->Write();
+	h1_global_eec_LightB->Write();
+	h1_global_eec_LightM->Write();
+	h1_global_eec_HeavyM->Write();
 
 	f->Write(); ////!!!!!!!!
 	f->Close();
