@@ -51,8 +51,8 @@ using namespace std;
 #define PI 3.1415926
 
 void hadron_loop(AMPT* track,int i);
-void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec)
-void writeHistograms(char *outFile)
+void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec);
+void writeHistograms(char *outFile);
 
 vector<TVector3> LightB;
 vector<TVector3> LightM;
