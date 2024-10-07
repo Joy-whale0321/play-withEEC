@@ -246,7 +246,7 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec,TH1D* h1_glo
 					double delta_phi = 2.0*PI - fabs(Particles_v[i].Y()-Particles_v[j].Y());
 					double RL = sqrt(delta_phi*delta_phi + delta_eta*delta_eta);
 
-					double energy_factor = (Particles_v[i].Z() * Particles_v[j].Z())/energyofevent;
+					double energy_factor = (Particles_v[i].Z() * Particles_v[j].Z())/(energyofevent*energyofevent);
 					// double energy_factor = 1;
 
 					h1_global_eec->Fill(RL,energy_factor);
@@ -259,7 +259,7 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec,TH1D* h1_glo
 					double delta_phi = fabs(Particles_v[i].Y()-Particles_v[j].Y());
 					double RL = sqrt(delta_phi*delta_phi + delta_eta*delta_eta);
 
-					double energy_factor = (Particles_v[i].Z() * Particles_v[j].Z())/energyofevent;
+					double energy_factor = (Particles_v[i].Z() * Particles_v[j].Z())/(energyofevent*energyofevent);
 					// double energy_factor = 1;
 
 					h1_global_eec->Fill(RL,energy_factor);
