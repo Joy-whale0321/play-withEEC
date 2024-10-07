@@ -58,7 +58,7 @@ vector<TVector3> LightB;
 vector<TVector3> LightM;
 vector<TVector3> HeavyM;
 
-double eta_cut=5.0;//MLCC
+double eta_cut=1.0;//MLCC
 double delta_eta_cut=0.0;//MLCC                              
 double pt_low_cut=0.001;//MLCC
 double pt_high_cut=10.0;//MLCC
@@ -224,17 +224,14 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec,TH1D* h1_glo
 {
   	if((int)(Particles_v.size())==0) return;
 
-	int number_pair = 0;
+	double eneryofevent = 0;
 
 	for(int i=0;i<(int)(Particles_v.size());i++)
   	{
-		for(int j=0;j<(int)(Particles_v.size());j++)
+		if(Particles_v[i].Z()>pt_low_cut && Particles_v[i].Z<pt_high_cut)
 		{
-		    if(i!=j && fabs(Particles_v[i].X()-Particles_v[j].X())>delta_eta_cut && Particles_v[i].Z()>pt_low_cut && Particles_v[i].Z()<pt_high_cut && Particles_v[j].Z()>pt_low_cut && Particles_v[j].Z()<pt_high_cut)
-			{
-				number_pair = number_pair + 1;
-			}
-		}
+			eneryofevent = eneryofevent + Particles_v[i].Z();
+		}	
 	}
 
 	for(int i=0;i<(int)(Particles_v.size());i++)
@@ -249,7 +246,7 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec,TH1D* h1_glo
 					double delta_phi = 2.0*PI - fabs(Particles_v[i].Y()-Particles_v[j].Y());
 					double RL = sqrt(delta_phi*delta_phi + delta_eta*delta_eta);
 
-					double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
+					double energy_factor = (Particles_v[i].Z() * Particles_v[j].Z())/eneryofevent;
 					// double energy_factor = 1;
 
 					h1_global_eec->Fill(RL,energy_factor);
@@ -262,7 +259,7 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec,TH1D* h1_glo
 					double delta_phi = fabs(Particles_v[i].Y()-Particles_v[j].Y());
 					double RL = sqrt(delta_phi*delta_phi + delta_eta*delta_eta);
 
-					double energy_factor = Particles_v[i].Z() * Particles_v[j].Z();
+					double energy_factor = (Particles_v[i].Z() * Particles_v[j].Z())/eneryofevent;
 					// double energy_factor = 1;
 
 					h1_global_eec->Fill(RL,energy_factor);
