@@ -228,7 +228,7 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec,TH1D* h1_glo
 
 	for(int i=0;i<(int)(Particles_v.size());i++)
   	{
-		if(Particles_v[i].Z()>pt_low_cut && Particles_v[i].Z<pt_high_cut)
+		if(Particles_v[i].Z()>pt_low_cut && Particles_v[i].Z()<pt_high_cut)
 		{
 			energyofevent = energyofevent + Particles_v[i].Z();
 		}	
