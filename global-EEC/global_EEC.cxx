@@ -58,7 +58,7 @@ vector<TVector3> LightB;
 vector<TVector3> LightM;
 vector<TVector3> HeavyM;
 
-double eta_cut=1.0;//MLCC
+double eta_cut=3.0;//MLCC
 double delta_eta_cut=0.0;//MLCC                              
 double pt_low_cut=0.001;//MLCC
 double pt_high_cut=10.0;//MLCC
@@ -132,10 +132,21 @@ int main(int argc, char **argv)
 
  	// cout<<"No. zpct0="<<mNEvents1<<" No. afterART="<<mNEvents2<<" No. after zpc="<<mNEvents3<<endl;
 
-	h1_global_eec_allparticle = new TH1D("h1_global_eec_allparticle","h1_global_eec_allparticle",11000,-1.0, 10.0);
-	h1_global_eec_LightB = new TH1D("h1_global_eec_LightB","h1_global_eec_LightB",11000,-1.0, 10.0);
-	h1_global_eec_LightM = new TH1D("h1_global_eec_LightM","h1_global_eec_LightM",11000,-1.0, 10.0);
-	h1_global_eec_HeavyM = new TH1D("h1_global_eec_HeavyM","h1_global_eec_HeavyM",11000,-1.0, 10.0);
+	// log分bin
+	int nbins = 40;
+    
+    // 创建一个保存bin边界的数组
+    double *bins = new double[nbins + 1];
+    
+    // 计算bin边界，从10^0到10^-4，每隔0.1一个bin
+    for (int i = 0; i <= nbins; ++i) {
+        bins[i] = pow(10, -0.1 * i); // 每个bin边界是10^-0.1的倍数
+    }
+
+	h1_global_eec_allparticle = new TH1D("h1_global_eec_allparticle","h1_global_eec_allparticle",nbins,bins);
+	h1_global_eec_LightB = new TH1D("h1_global_eec_LightB","h1_global_eec_LightB",nbins,bins);
+	h1_global_eec_LightM = new TH1D("h1_global_eec_LightM","h1_global_eec_LightM",nbins,bins);
+	h1_global_eec_HeavyM = new TH1D("h1_global_eec_HeavyM","h1_global_eec_HeavyM",nbins,bins);
 
 	h1_global_dphic_allparticle = new TH1D("h1_global_dphic_allparticle","h1_global_dphic_allparticle",11000,-1.0, 10.0);
 	h1_global_dphic_LightB = new TH1D("h1_global_dphic_LightB","h1_global_dphic_LightB",11000,-1.0, 10.0);
@@ -248,8 +259,9 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec,TH1D* h1_glo
 
 					double energy_factor = (Particles_v[i].Z() * Particles_v[j].Z())/(energyofevent*energyofevent);
 					// double energy_factor = 1;
-
-					h1_global_eec->Fill(RL,energy_factor);
+					if(RL<1.0){
+						h1_global_eec->Fill(RL,energy_factor);
+					}		
 					h1_global_dphic->Fill(delta_phi,energy_factor);
 					h1_global_detac->Fill(delta_eta,energy_factor);
 				}
@@ -262,7 +274,9 @@ void try2correlate(vector<TVector3> Particles_v,TH1D* h1_global_eec,TH1D* h1_glo
 					double energy_factor = (Particles_v[i].Z() * Particles_v[j].Z())/(energyofevent*energyofevent);
 					// double energy_factor = 1;
 
-					h1_global_eec->Fill(RL,energy_factor);
+					if(RL<1.0){
+						h1_global_eec->Fill(RL,energy_factor);
+					}
 					h1_global_dphic->Fill(delta_phi,energy_factor);
 					h1_global_detac->Fill(delta_eta,energy_factor);
 				}
