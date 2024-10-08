@@ -133,14 +133,12 @@ int main(int argc, char **argv)
  	// cout<<"No. zpct0="<<mNEvents1<<" No. afterART="<<mNEvents2<<" No. after zpc="<<mNEvents3<<endl;
 
 	// log分bin
-	int nbins = 40;
-    
-    // 创建一个保存bin边界的数组
+	int nbins = 50;
+
     double *bins = new double[nbins + 1];
-    
-    // 计算bin边界，从10^0到10^-4，每隔0.1一个bin
+
     for (int i = 0; i <= nbins; ++i) {
-        bins[i] = pow(10, -0.1 * i); // 每个bin边界是10^-0.1的倍数
+        bins[i] = pow(10, -5.0 + 0.1 * i); // 每个bin边界是10^-0.1的倍数
     }
 
 	h1_global_eec_allparticle = new TH1D("h1_global_eec_allparticle","h1_global_eec_allparticle",nbins,bins);
